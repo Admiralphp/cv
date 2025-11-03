@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   cv-web:
     image: ${DOCKER_USERNAME}/cv:v1
