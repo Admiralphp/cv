@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Mohamed Essid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.5;
+            color: #1e293b;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header .title {
+            font-size: 1.25rem;
+            font-weight: 300;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .contact-info span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #0ea5e9;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-text {
+            text-align: justify;
+            line-height: 1.6;
+            color: #475569;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .skill-category h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-category ul {
+            list-style: none;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+
+        .skill-category li {
+            padding: 0.2rem 0;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .skill-category li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #0ea5e9;
+        }
+
+        .experience-item {
+            margin-bottom: 1.25rem;
+            padding-left: 1rem;
+            border-left: 3px solid #0ea5e9;
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.25rem;
+        }
+
+        .experience-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .experience-period {
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .experience-company {
+            font-size: 0.9rem;
+            color: #0ea5e9;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-description {
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .experience-description ul {
+            margin-left: 1.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .experience-description li {
+            margin-bottom: 0.25rem;
+        }
+
+        .education-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .education-degree {
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.95rem;
+        }
+
+        .education-school {
+            color: #0ea5e9;
+            font-size: 0.85rem;
+        }
+
+        .education-year {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .project-item {
+            background: #f1f5f9;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border-left: 3px solid #0ea5e9;
+        }
+
+        .project-title {
+            font-weight: 600;
+            color: #1e40af;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .project-description {
+            font-size: 0.8rem;
+            color: #475569;
+            line-height: 1.4;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                max-width: 100%;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-info {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Mohamed Essid</h1>
+            <div class="title">Directeur Technique | Architecte SI | Expert en Transformation Digitale</div>
+            <div class="contact-info">
+                <span>📧 mohamed.essid@example.com</span>
+                <span>📱 +216 XX XXX XXX</span>
+                <span>📍 Tunis, Tunisie</span>
+                <span>🔗 LinkedIn</span>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Profile -->
+            <section class="section">
+                <h2 class="section-title">Profil</h2>
+                <p class="profile-text">
+                    Directeur Technique et Architecte SI avec plus de 18 ans d'expérience dans la conception et la mise en œuvre de solutions technologiques innovantes. Expert en transformation digitale, architecture cloud, et gestion de projets complexes. Capacité démontrée à diriger des équipes techniques, à optimiser les processus et à aligner la stratégie IT avec les objectifs business. Passionné par l'innovation technologique et l'excellence opérationnelle.
+                </p>
+            </section>
+
+            <!-- Skills -->
+            <section class="section">
+                <h2 class="section-title">Compétences</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Compétences Techniques</h4>
+                        <ul>
+                            <li>Architecture Cloud (AWS, Azure, GCP)</li>
+                            <li>Microservices & API</li>
+                            <li>DevOps & CI/CD</li>
+                            <li>Conteneurisation (Docker, Kubernetes)</li>
+                            <li>Bases de données (SQL, NoSQL)</li>
+                            <li>Sécurité & Cybersécurité</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Compétences Méthodologiques</h4>
+                        <ul>
+                            <li>Agile & Scrum</li>
+                            <li>Design Thinking</li>
+                            <li>Architecture d'Entreprise</li>
+                            <li>Gestion de Projet (PMP)</li>
+                            <li>ITIL & Gouvernance IT</li>
+                            <li>Transformation Digitale</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Compétences Managériales</h4>
+                        <ul>
+                            <li>Leadership d'équipes techniques</li>
+                            <li>Gestion budgétaire</li>
+                            <li>Stratégie IT</li>
+                            <li>Gestion des parties prenantes</li>
+                            <li>Coaching & Mentorat</li>
+                            <li>Négociation & Communication</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience -->
+            <section class="section">
+                <h2 class="section-title">Expérience Professionnelle</h2>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">Directeur Technique (CTO)</div>
+                        <div class="experience-period">2020 - Présent</div>
+                    </div>
+                    <div class="experience-company">TechCorp Solutions | Tunis, Tunisie</div>
+                    <div class="experience-description">
+                        <ul>
+                            <li>Direction de la stratégie technologique et supervision d'une équipe de 50+ développeurs et ingénieurs</li>
+                            <li>Mise en place d'une architecture microservices cloud-native réduisant les coûts d'infrastructure de 40%</li>
+                            <li>Pilotage de la transformation digitale et migration vers le cloud (AWS)</li>
+                            <li>Implémentation de pratiques DevOps et CI/CD, réduisant le time-to-market de 60%</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">Architecte Solutions Senior</div>
+                        <div class="experience-period">2016 - 2020</div>
+                    </div>
+                    <div class="experience-company">Digital Innovations | Tunis, Tunisie</div>
+                    <div class="experience-description">
+                        <ul>
+                            <li>Conception et implémentation d'architectures techniques pour des projets d'envergure nationale</li>
+                            <li>Leadership technique sur des projets de transformation digitale pour le secteur bancaire</li>
+                            <li>Mise en place de standards d'architecture et de bonnes pratiques de développement</li>
+                            <li>Mentorat d'équipes techniques et formation sur les technologies émergentes</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">Chef de Projet Technique</div>
+                        <div class="experience-period">2012 - 2016</div>
+                    </div>
+                    <div class="experience-company">SoftDev Consulting | Tunis, Tunisie</div>
+                    <div class="experience-description">
+                        <ul>
+                            <li>Gestion de projets de développement logiciel complexes avec des équipes distribuées</li>
+                            <li>Coordination avec les parties prenantes et gestion des budgets (jusqu'à 2M€)</li>
+                            <li>Implémentation de méthodologies Agile et amélioration continue des processus</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <div class="experience-title">Ingénieur Développement Senior</div>
+                        <div class="experience-period">2006 - 2012</div>
+                    </div>
+                    <div class="experience-company">WebTech Solutions | Tunis, Tunisie</div>
+                    <div class="experience-description">
+                        <ul>
+                            <li>Développement d'applications web et mobiles pour divers secteurs d'activité</li>
+                            <li>Participation à la conception d'architectures techniques et choix technologiques</li>
+                            <li>Évolution vers des responsabilités de lead developer et de technical lead</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Education -->
+            <section class="section">
+                <h2 class="section-title">Formation</h2>
+                <div class="education-item">
+                    <div class="education-degree">Diplôme d'Ingénieur en Informatique</div>
+                    <div class="education-school">École Nationale d'Ingénieurs de Tunis (ENIT)</div>
+                    <div class="education-year">2006</div>
+                </div>
+                <div class="education-item">
+                    <div class="education-degree">Certifications Professionnelles</div>
+                    <div class="education-school">AWS Solutions Architect Professional, PMP, TOGAF, Certified Scrum Master</div>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section class="section">
+                <h2 class="section-title">Projets Majeurs</h2>
+                <div class="projects-grid">
+                    <div class="project-item">
+                        <div class="project-title">Plateforme E-Banking</div>
+                        <div class="project-description">
+                            Architecture et développement d'une plateforme bancaire digitale servant 500K+ utilisateurs avec une disponibilité de 99.9%
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Migration Cloud</div>
+                        <div class="project-description">
+                            Orchestration de la migration complète de l'infrastructure on-premise vers AWS, réduisant les coûts de 40%
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Système IoT Industriel</div>
+                        <div class="project-description">
+                            Conception d'une architecture IoT pour la surveillance en temps réel de 1000+ équipements industriels
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-title">Transformation DevOps</div>
+                        <div class="project-description">
+                            Implémentation d'une chaîne CI/CD complète et culture DevOps, réduisant le time-to-market de 60%
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  cv-web:
+    image: ${DOCKER_USERNAME}/cv:v1
+    container_name: cv-mohamed-essid
+    ports:
+      - "8005:80"
+    restart: unless-stopped
+    labels:
+      description: "CV One-Page de Mohamed Essid"
+      version: "1.0"
