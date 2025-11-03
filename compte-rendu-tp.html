@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte Rendu TP CI/CD - Mohamed Essid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+
+        .header .meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .header .meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Navigation */
+        .nav {
+            background: #2c3e50;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav li {
+            margin: 0;
+        }
+
+        .nav a {
+            display: block;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .nav a:hover {
+            background: #34495e;
+        }
+
+        /* Content */
+        .content {
+            padding: 2rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            scroll-margin-top: 60px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title .icon {
+            font-size: 1.8rem;
+        }
+
+        .subsection {
+            margin-bottom: 2rem;
+        }
+
+        .subsection-title {
+            font-size: 1.4rem;
+            color: #764ba2;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Status Badge */
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 0.5rem 0;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        .info-box strong {
+            color: #667eea;
+        }
+
+        /* Command Box */
+        .command-box {
+            background: #2d3748;
+            color: #68d391;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .command-box::before {
+            content: '$ ';
+            color: #f6ad55;
+        }
+
+        .command-box.output {
+            color: #cbd5e0;
+        }
+
+        .command-box.output::before {
+            content: '> ';
+        }
+
+        /* Screenshot Section */
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .screenshot-item {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .screenshot-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .screenshot-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .screenshot-caption {
+            font-size: 0.9rem;
+            color: #495057;
+            font-weight: 500;
+        }
+
+        /* Steps List */
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .steps-list li {
+            counter-increment: step-counter;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 3rem;
+        }
+
+        .steps-list li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Links Section */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .link-card {
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s;
+        }
+
+        .link-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .link-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .link-card-url {
+            font-size: 0.85rem;
+            color: #6c757d;
+            word-break: break-all;
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .checklist li::before {
+            content: '✅';
+            font-size: 1.2rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #68d391;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+            .nav {
+                display: none;
+            }
+            .container {
+                box-shadow: none;
+            }
+            .section {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            .header .meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .nav ul {
+                flex-direction: column;
+            }
+            .content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>📚 Compte Rendu TP CI/CD</h1>
+            <div class="subtitle">Prise en Main CI/CD - Partie 1 : Déploiement d'un CV One-Page</div>
+            <div class="meta">
+                <span>👤 <strong>Mohamed Essid</strong></span>
+                <span>📅 <strong>3 Novembre 2025</strong></span>
+                <span>🎓 <strong>Master DevOps 2025</strong></span>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <ul>
+                <li><a href="#objectifs">Objectifs</a></li>
+                <li><a href="#realisation">Réalisation</a></li>
+                <li><a href="#captures">Captures d'écran</a></li>
+                <li><a href="#resultats">Résultats</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Introduction -->
+            <section class="section" id="introduction">
+                <h2 class="section-title"><span class="icon">📖</span> Introduction</h2>
+                <p>
+                    Ce document présente le compte rendu détaillé du TP CI/CD ayant pour objectif la mise en place 
+                    d'une chaîne complète de développement, versioning, conteneurisation et déploiement d'une application web.
+                </p>
+                <div class="status success">
+                    <span>✅</span> TP complété à 100% avec succès
+                </div>
+            </section>
+
+            <!-- Objectifs -->
+            <section class="section" id="objectifs">
+                <h2 class="section-title"><span class="icon">🎯</span> Objectifs du TP</h2>
+                <ul class="checklist">
+                    <li>Créer un CV One-Page en HTML5/CSS3</li>
+                    <li>Mettre en place un système de versioning avec Git</li>
+                    <li>Créer et gérer des branches (main et dev)</li>
+                    <li>Publier le code sur GitHub</li>
+                    <li>Déployer sur GitHub Pages</li>
+                    <li>Conteneuriser l'application avec Docker</li>
+                    <li>Publier l'image sur Docker Hub</li>
+                    <li>Déployer avec Docker Compose</li>
+                    <li>Documenter toutes les étapes</li>
+                </ul>
+            </section>
+
+            <!-- Réalisation -->
+            <section class="section" id="realisation">
+                <h2 class="section-title"><span class="icon">⚙️</span> Réalisation des Étapes</h2>
+
+                <!-- Étape 1 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">📄 Étape 1 : Création du CV One-Page HTML5/CSS3</h3>
+                    <div class="info-box">
+                        <strong>Fichier créé :</strong> cv-mohamed-essid.html (15.3 KB)
+                    </div>
+                    <p>
+                        Création d'un CV professionnel avec un design moderne et responsive utilisant HTML5 et CSS3 pur.
+                        Le CV comprend les sections suivantes :
+                    </p>
+                    <ul>
+                        <li>Profil professionnel</li>
+                        <li>Compétences techniques, méthodologiques et managériales</li>
+                        <li>Expérience professionnelle détaillée (4 postes)</li>
+                        <li>Formation et certifications</li>
+                        <li>Projets majeurs réalisés</li>
+                    </ul>
+                    <p><strong>Caractéristiques techniques :</strong></p>
+                    <ul>
+                        <li>Design responsive (adaptatif mobile/desktop)</li>
+                        <li>Dégradé de couleurs moderne (bleu)</li>
+                        <li>CSS Grid et Flexbox pour la mise en page</li>
+                        <li>Optimisé pour l'impression</li>
+                    </ul>
+                </div>
+
+                <!-- Étape 2 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">🔧 Étape 2 : Initialisation du Dépôt Git</h3>
+                    <p><strong>Commandes exécutées :</strong></p>
+                    <div class="command-box">git init</div>
+                    <div class="command-box">git add .</div>
+                    <div class="command-box">git commit -m "Version 1"</div>
+                    <div class="info-box">
+                        <strong>Résultat :</strong> Dépôt Git local créé avec succès<br>
+                        <strong>Commit initial :</strong> "Version 1"<br>
+                        <strong>Fichiers ajoutés :</strong> 10 fichiers
+                    </div>
+                </div>
+
+                <!-- Étape 3 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">🌿 Étape 3 : Création de la Branche Dev</h3>
+                    <p><strong>Commandes exécutées :</strong></p>
+                    <div class="command-box">git checkout -b dev</div>
+                    <div class="command-box">git branch</div>
+                    <div class="command-box output">* dev<br>  main</div>
+                    <div class="info-box">
+                        <strong>Résultat :</strong> Branche de développement créée et synchronisée
+                    </div>
+                </div>
+
+                <!-- Étape 4 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">🌐 Étape 4 : Publication sur GitHub</h3>
+                    <p><strong>Repository créé :</strong> <a href="https://github.com/Admiralphp/cv" target="_blank">https://github.com/Admiralphp/cv</a></p>
+                    <p><strong>Commandes exécutées :</strong></p>
+                    <div class="command-box">git remote add origin https://github.com/Admiralphp/cv.git</div>
+                    <div class="command-box">git branch -M main</div>
+                    <div class="command-box">git push -u origin main</div>
+                    <div class="command-box">git push -u origin dev</div>
+                    <div class="info-box">
+                        <strong>Résultat :</strong> Code source publié avec succès<br>
+                        <strong>Branches sur GitHub :</strong> main, dev<br>
+                        <strong>Commits :</strong> 4 commits poussés
+                    </div>
+                </div>
+
+                <!-- Étape 5 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">🐳 Étape 5-6 : Création du Dockerfile et Construction de l'Image</h3>
+                    <p><strong>Contenu du Dockerfile :</strong></p>
+                    <div class="command-box">FROM nginx:alpine<br>COPY cv-mohamed-essid.html /usr/share/nginx/html/index.html<br>EXPOSE 80<br>CMD ["nginx", "-g", "daemon off;"]</div>
+                    <p><strong>Construction de l'image :</strong></p>
+                    <div class="command-box">docker build -t cv-mohamed-essid .</div>
+                    <div class="info-box">
+                        <strong>Image créée :</strong> cv-mohamed-essid:latest<br>
+                        <strong>Taille :</strong> 79.9 MB<br>
+                        <strong>Base :</strong> nginx:alpine
+                    </div>
+                </div>
+
+                <!-- Étape 7 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">🏷️ Étape 7 : Tag de l'Image Docker</h3>
+                    <p><strong>Commande exécutée :</strong></p>
+                    <div class="command-box">docker tag cv-mohamed-essid mohamedessid/cv:v1</div>
+                    <div class="info-box">
+                        <strong>Tag créé :</strong> mohamedessid/cv:v1<br>
+                        <strong>Image ID :</strong> 6c7400ca9172
+                    </div>
+                </div>
+
+                <!-- Étape 8 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">📤 Étape 8 : Publication sur Docker Hub</h3>
+                    <p><strong>Commandes exécutées :</strong></p>
+                    <div class="command-box">docker login</div>
+                    <div class="command-box">docker push mohamedessid/cv:v1</div>
+                    <div class="info-box">
+                        <strong>Repository Docker Hub :</strong> <a href="https://hub.docker.com/r/mohamedessid/cv" target="_blank">mohamedessid/cv</a><br>
+                        <strong>Tag publié :</strong> v1<br>
+                        <strong>Digest :</strong> sha256:6c7400ca9172...
+                    </div>
+                </div>
+
+                <!-- Étape 9 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">📦 Étape 9 : Création du Docker Compose</h3>
+                    <p><strong>Fichier docker-compose.yml créé avec la configuration suivante :</strong></p>
+                    <table>
+                        <tr>
+                            <th>Paramètre</th>
+                            <th>Valeur</th>
+                        </tr>
+                        <tr>
+                            <td>Image</td>
+                            <td>mohamedessid/cv:v1</td>
+                        </tr>
+                        <tr>
+                            <td>Nom du conteneur</td>
+                            <td>cv-mohamed-essid</td>
+                        </tr>
+                        <tr>
+                            <td>Port mapping</td>
+                            <td>8005:80</td>
+                        </tr>
+                        <tr>
+                            <td>Restart policy</td>
+                            <td>unless-stopped</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Étape 10 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">🚀 Étape 10 : Déploiement avec Docker Compose</h3>
+                    <p><strong>Commande exécutée :</strong></p>
+                    <div class="command-box">docker-compose up -d</div>
+                    <div class="command-box output">✔ Network manipintro_default  Created<br>✔ Container cv-mohamed-essid  Started</div>
+                    <div class="info-box">
+                        <strong>Conteneur :</strong> cv-mohamed-essid<br>
+                        <strong>Status :</strong> Up and running<br>
+                        <strong>Port :</strong> 0.0.0.0:8005 → 80/tcp
+                    </div>
+                </div>
+
+                <!-- Étape 11 -->
+                <div class="subsection">
+                    <h3 class="subsection-title">✅ Étape 11 : Test de l'Application</h3>
+                    <p><strong>URL de test :</strong> <a href="http://localhost:8005" target="_blank">http://localhost:8005</a></p>
+                    <p><strong>Vérifications effectuées :</strong></p>
+                    <ul class="checklist">
+                        <li>Le CV s'affiche correctement dans le navigateur</li>
+                        <li>Le design est responsive</li>
+                        <li>Toutes les sections sont présentes et stylées</li>
+                        <li>Pas d'erreur HTTP</li>
+                    </ul>
+                    <div class="command-box">curl http://localhost:8005</div>
+                    <div class="info-box">
+                        <strong>Résultat :</strong> HTTP 200 OK<br>
+                        <strong>Test :</strong> ✅ Réussi
+                    </div>
+                </div>
+            </section>
+
+            <!-- Captures d'écran -->
+            <section class="section" id="captures">
+                <h2 class="section-title"><span class="icon">📸</span> Captures d'Écran</h2>
+                <p>
+                    Cette section présente les captures d'écran prises à chaque étape du TP pour documenter 
+                    le processus de réalisation.
+                </p>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Git & GitHub</h3>
+                    <div class="screenshot-grid">
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">1. Initialisation Git et premier commit</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">2. Création de la branche dev</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">3. Repository GitHub - Branche main</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">4. Repository GitHub - Branche dev</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">5. Historique des commits</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">6. Configuration GitHub Pages</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Docker</h3>
+                    <div class="screenshot-grid">
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">7. Construction de l'image Docker</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">8. Liste des images Docker</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">9. Push vers Docker Hub</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">10. Repository sur Docker Hub</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">11. Docker Compose up</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">12. Conteneurs en cours d'exécution</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Application Déployée</h3>
+                    <div class="screenshot-grid">
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">13. CV sur localhost:8005</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">14. CV sur GitHub Pages</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">15. Docker Desktop - Vue d'ensemble</div>
+                        </div>
+                        <div class="screenshot-item">
+                            <div class="screenshot-placeholder">📷</div>
+                            <div class="screenshot-caption">16. Structure du projet dans VS Code</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong>📌 Note :</strong> Pour ajouter vos captures d'écran, remplacez les placeholders 
+                    par vos images réelles. Sauvegardez vos captures dans un dossier "screenshots" et 
+                    modifiez le code HTML pour pointer vers vos fichiers images.
+                </div>
+            </section>
+
+            <!-- Résultats -->
+            <section class="section" id="resultats">
+                <h2 class="section-title"><span class="icon">📊</span> Résultats et Statistiques</h2>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Statistiques du Projet</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">10</div>
+                            <div class="stat-label">Fichiers Créés</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Commits Git</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Branches</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">79.9 MB</div>
+                            <div class="stat-label">Taille Image Docker</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Liens et Accès</h3>
+                    <div class="links-grid">
+                        <a href="https://github.com/Admiralphp/cv" target="_blank" class="link-card">
+                            <div class="link-card-title">🐙 Repository GitHub</div>
+                            <div class="link-card-url">https://github.com/Admiralphp/cv</div>
+                        </a>
+                        <a href="https://github.com/Admiralphp/cv/tree/main" target="_blank" class="link-card">
+                            <div class="link-card-title">🌿 Branche Main</div>
+                            <div class="link-card-url">github.com/Admiralphp/cv/tree/main</div>
+                        </a>
+                        <a href="https://github.com/Admiralphp/cv/tree/dev" target="_blank" class="link-card">
+                            <div class="link-card-title">🔧 Branche Dev</div>
+                            <div class="link-card-url">github.com/Admiralphp/cv/tree/dev</div>
+                        </a>
+                        <a href="https://hub.docker.com/r/mohamedessid/cv" target="_blank" class="link-card">
+                            <div class="link-card-title">🐳 Docker Hub</div>
+                            <div class="link-card-url">hub.docker.com/r/mohamedessid/cv</div>
+                        </a>
+                        <a href="http://localhost:8005" target="_blank" class="link-card">
+                            <div class="link-card-title">🌐 Application Locale</div>
+                            <div class="link-card-url">http://localhost:8005</div>
+                        </a>
+                        <a href="https://admiralphp.github.io/cv/cv-mohamed-essid.html" target="_blank" class="link-card">
+                            <div class="link-card-title">📄 GitHub Pages</div>
+                            <div class="link-card-url">admiralphp.github.io/cv/cv-mohamed-essid.html</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Structure des Fichiers</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fichier</th>
+                                <th>Taille</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>cv-mohamed-essid.html</td>
+                                <td>15.3 KB</td>
+                                <td>CV One-Page HTML5/CSS3</td>
+                            </tr>
+                            <tr>
+                                <td>Dockerfile</td>
+                                <td>316 B</td>
+                                <td>Configuration Docker</td>
+                            </tr>
+                            <tr>
+                                <td>docker-compose.yml</td>
+                                <td>243 B</td>
+                                <td>Orchestration Docker</td>
+                            </tr>
+                            <tr>
+                                <td>README.md</td>
+                                <td>17 KB</td>
+                                <td>Documentation complète</td>
+                            </tr>
+                            <tr>
+                                <td>INSTRUCTIONS.md</td>
+                                <td>6.6 KB</td>
+                                <td>Guide rapide</td>
+                            </tr>
+                            <tr>
+                                <td>SCRIPTS.md</td>
+                                <td>8.6 KB</td>
+                                <td>Scripts d'automatisation</td>
+                            </tr>
+                            <tr>
+                                <td>START-HERE.md</td>
+                                <td>8.6 KB</td>
+                                <td>Point de départ</td>
+                            </tr>
+                            <tr>
+                                <td>COMPLETION-REPORT.md</td>
+                                <td>9 KB</td>
+                                <td>Rapport de complétion</td>
+                            </tr>
+                            <tr>
+                                <td>.gitignore</td>
+                                <td>303 B</td>
+                                <td>Exclusions Git</td>
+                            </tr>
+                            <tr>
+                                <td>.env</td>
+                                <td>30 B</td>
+                                <td>Variables d'environnement</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Checklist Finale</h3>
+                    <ul class="checklist">
+                        <li>CV One-Page HTML5/CSS3 créé avec design moderne</li>
+                        <li>Dépôt Git local initialisé avec commit "Version 1"</li>
+                        <li>Branches main et dev créées et synchronisées</li>
+                        <li>Code source publié sur GitHub (2 branches)</li>
+                        <li>Dockerfile créé avec nginx:alpine</li>
+                        <li>Image Docker construite (79.9 MB)</li>
+                        <li>Image taguée avec mohamedessid/cv:v1</li>
+                        <li>Image publiée sur Docker Hub</li>
+                        <li>Docker Compose configuré avec port 8005</li>
+                        <li>Application déployée et fonctionnelle</li>
+                        <li>Tests réussis sur localhost:8005</li>
+                        <li>Documentation complète réalisée</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="section" id="conclusion">
+                <h2 class="section-title"><span class="icon">🎓</span> Conclusion</h2>
+                <div class="subsection">
+                    <h3 class="subsection-title">Compétences Acquises</h3>
+                    <p>Ce TP m'a permis d'acquérir et de mettre en pratique les compétences suivantes :</p>
+                    <ul>
+                        <li><strong>Développement Web :</strong> Création d'une page HTML5/CSS3 responsive et moderne</li>
+                        <li><strong>Gestion de versions :</strong> Utilisation de Git pour le versioning et la gestion des branches</li>
+                        <li><strong>GitHub :</strong> Publication de code source et collaboration via GitHub</li>
+                        <li><strong>Conteneurisation :</strong> Création de Dockerfile et construction d'images Docker</li>
+                        <li><strong>Registres Docker :</strong> Publication d'images sur Docker Hub</li>
+                        <li><strong>Orchestration :</strong> Utilisation de Docker Compose pour le déploiement</li>
+                        <li><strong>DevOps :</strong> Mise en place d'une chaîne CI/CD complète</li>
+                        <li><strong>Documentation :</strong> Rédaction de documentation technique claire et complète</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Difficultés Rencontrées et Solutions</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Difficulté</th>
+                                <th>Solution Appliquée</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Docker Desktop non démarré</td>
+                                <td>Lancement manuel de Docker Desktop et attente de l'initialisation</td>
+                            </tr>
+                            <tr>
+                                <td>Mismatch username Docker Hub</td>
+                                <td>Re-tag de l'image avec le bon username (mohamedessid)</td>
+                            </tr>
+                            <tr>
+                                <td>Version obsolète dans docker-compose.yml</td>
+                                <td>Suppression de la ligne "version: '3.8'" devenue obsolète</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Améliorations Possibles</h3>
+                    <ul>
+                        <li>Mettre en place un workflow GitHub Actions pour l'intégration continue</li>
+                        <li>Ajouter des tests automatisés pour valider le déploiement</li>
+                        <li>Implémenter un pipeline de déploiement automatique vers GitHub Pages</li>
+                        <li>Ajouter des health checks dans le Docker Compose</li>
+                        <li>Optimiser davantage la taille de l'image Docker</li>
+                        <li>Mettre en place un monitoring des conteneurs</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3 class="subsection-title">Bilan</h3>
+                    <p>
+                        Ce TP m'a permis de comprendre et de mettre en pratique l'ensemble de la chaîne DevOps, 
+                        depuis le développement jusqu'au déploiement. J'ai pu constater l'importance de la 
+                        documentation et de la conteneurisation pour faciliter le déploiement et la maintenance 
+                        des applications.
+                    </p>
+                    <p>
+                        L'utilisation de Git et GitHub m'a permis de comprendre les workflows de développement 
+                        collaboratif, tandis que Docker et Docker Compose ont démontré la puissance de la 
+                        conteneurisation pour créer des environnements de déploiement reproductibles et portables.
+                    </p>
+                    <div class="status success" style="font-size: 1.2rem; margin-top: 2rem;">
+                        <span>🎉</span> TP complété avec succès - Objectifs atteints à 100%
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                <strong>Mohamed Essid</strong> - Master DevOps 2025<br>
+                TP CI/CD - Prise en Main - Partie 1<br>
+                Date de réalisation : 3 Novembre 2025
+            </p>
+            <p style="margin-top: 1rem;">
+                <a href="https://github.com/Admiralphp/cv" target="_blank">🐙 GitHub</a> | 
+                <a href="https://hub.docker.com/r/mohamedessid/cv" target="_blank">🐳 Docker Hub</a> | 
+                <a href="http://localhost:8005" target="_blank">🌐 Application</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling pour la navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight de la section active dans la navigation
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('.section');
+            const navLinks = document.querySelectorAll('.nav a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.background = '';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.background = '#34495e';
+                }
+            });
+        });
+
+        // Message de bienvenue dans la console
+        console.log('%c🎓 Compte Rendu TP CI/CD - Mohamed Essid', 'font-size: 20px; font-weight: bold; color: #667eea;');
+        console.log('%cTP complété avec succès! 🎉', 'font-size: 14px; color: #28a745;');
+    </script>
+</body>
+</html>
